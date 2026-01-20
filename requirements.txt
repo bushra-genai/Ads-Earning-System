@@ -1,0 +1,8 @@
+Flask
+Flask-JWT-Extended
+bcrypt
+mysql-connector-python
+APScheduler
+Flask-CORS
+Flask-SQLAlchemy
+Flask-Limiter
