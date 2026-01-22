@@ -20,10 +20,64 @@ RANK_REWARDS = [
 ]
 
 # Ad watching reward per ad
-AD_REWARD = 0.50
+AD_REWARD = 0.10
 
-# Withdrawal fee percentage
+# Plan configurations
+PLANS = {
+    'basic': {
+        'name': 'Basic',
+        'usd': 3,
+        'pkr': 840,
+        'ads_limit': 1
+    },
+    'standard': {
+        'name': 'Standard',
+        'usd': 7,
+        'pkr': 1960,
+        'ads_limit': 1
+    },
+    'premium': {
+        'name': 'Premium',
+        'usd': 10,
+        'pkr': 2800,
+        'ads_limit': 1
+    }
+}
+
+# Payment configurations
+PAYMENT_METHODS = [
+    {
+        'id': 'easypaisa',
+        'name': 'EasyPaisa',
+        'number': '03001234567',
+        'title': 'Admin EasyPaisa'
+    },
+    {
+        'id': 'jazzcash',
+        'name': 'JazzCash',
+        'number': '03007654321',
+        'title': 'Admin JazzCash'
+    },
+    {
+        'id': 'bank_transfer',
+        'name': 'Bank Transfer',
+        'number': '12345678901234',
+        'title': 'Admin Bank Account',
+        'details': 'Meezan Bank'
+    },
+    {
+        'id': 'crypto',
+        'name': 'USDT (TRC20)',
+        'number': 'TExxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+        'title': 'Admin USDT Wallet'
+    }
+]
+
+# Withdrawal configurations
 WITHDRAWAL_FEE_PERCENT = 0.05  # 5%
+MAX_WITHDRAWAL_REQUESTS_DAILY = 3
+MAX_WITHDRAWAL_AMOUNT_PKR = 500
+PKR_TO_USD_RATE = 280 # Approximate rate for internal conversion check
 
 # Logging configuration
 LOG_FILE = 'app.log'

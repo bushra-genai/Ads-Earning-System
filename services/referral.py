@@ -47,7 +47,10 @@ def calculate_team_commissions(deposit_amount, upline):
         for parent_id, level in upline:
             if level in REFERRAL_COMMISSIONS:
                 commission = deposit_amount * REFERRAL_COMMISSIONS[level]
+                # Credit both total and withdrawable
                 update_wallet_balance(parent_id, commission, 'credit')
+                from .wallet import update_withdrawable_balance
+                update_withdrawable_balance(parent_id, commission, 'credit')
                 logging.info(f"Commission {commission} credited to user {parent_id} for level {level}")
         db.session.commit()
     except Exception as e:
@@ -72,7 +75,10 @@ def apply_rank_rewards(leader_id, member_id, member_deposit):
             # Check if already rewarded? For simplicity, assume apply once per member deposit
             rank_reward = RankRewards(leader_id=leader_id, member_id=member_id, member_deposit=member_deposit, reward_amount=reward_amount)
             db.session.add(rank_reward)
+            # Credit both total and withdrawable
             update_wallet_balance(leader_id, reward_amount, 'credit')
+            from .wallet import update_withdrawable_balance
+            update_withdrawable_balance(leader_id, reward_amount, 'credit')
             logging.info(f"Rank reward {reward_amount} applied to leader {leader_id} for member {member_id}")
         db.session.commit()
     except Exception as e:

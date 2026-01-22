@@ -38,3 +38,32 @@ def role_required(role):
             return f(*args, **kwargs)
         return wrapper
     return decorator
+
+def plan_required(f):
+    """
+    Decorator to require an active plan for accessing certain routes.
+    """
+    @jwt_required()
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        user_id = get_jwt_identity()
+        try:
+            user = User.query.get(int(user_id))
+        except (ValueError, TypeError):
+            user = User.query.get(user_id)
+            
+        if not user:
+            return jsonify({'error': 'User not found'}), 401
+        
+        # Admin is always allowed
+        if user.role == 'admin':
+            return f(*args, **kwargs)
+
+        if user.plan_status != 'active':
+            return jsonify({
+                'error': 'Plan required',
+                'message': 'Please buy a plan to start earning.'
+            }), 403
+            
+        return f(*args, **kwargs)
+    return wrapper

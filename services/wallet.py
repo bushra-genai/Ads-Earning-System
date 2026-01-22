@@ -12,9 +12,13 @@ def update_wallet_balance(user_id, amount, operation='credit'):
     :param operation: 'credit' or 'debit'
     """
     try:
+        user_id = int(user_id)
         wallet = Wallet.query.filter_by(user_id=user_id).first()
         if not wallet:
-            raise ValueError(f"Wallet not found for user {user_id}")
+            # Lazy Wallet Creation for all operations
+            wallet = Wallet(user_id=user_id, balance=0.0, withdrawable=0.0, total_earned=0.0)
+            db.session.add(wallet)
+            # We don't commit yet to keep it part of the larger transaction if any
 
         if operation == 'credit':
             wallet.balance += amount
@@ -42,9 +46,12 @@ def update_withdrawable_balance(user_id, amount, operation='credit'):
     :param operation: 'credit' or 'debit'
     """
     try:
+        user_id = int(user_id)
         wallet = Wallet.query.filter_by(user_id=user_id).first()
         if not wallet:
-            raise ValueError(f"Wallet not found for user {user_id}")
+            # Lazy Wallet Creation
+            wallet = Wallet(user_id=user_id, balance=0.0, withdrawable=0.0, total_earned=0.0)
+            db.session.add(wallet)
 
         if operation == 'credit':
             wallet.withdrawable += amount

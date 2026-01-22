@@ -11,7 +11,13 @@ class User(db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     referral_code = db.Column(db.String(50), unique=True, nullable=True)
     referred_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-    plan_active = db.Column(db.Boolean, default=False)
+    
+    # Plan related fields
+    active_plan = db.Column(db.String(50), nullable=True)
+    plan_status = db.Column(db.Enum('none', 'pending', 'active', name='plan_status'), default='none')
+    ads_permission = db.Column(db.Boolean, default=False)
+    daily_ads_limit = db.Column(db.Integer, default=0)
+    
     role = db.Column(db.Enum('admin', 'user', name='user_role'), default='user')
     status = db.Column(db.Enum('active', 'suspended', 'banned', name='user_status'), default='active')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

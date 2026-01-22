@@ -1,81 +1,698 @@
 {
     "info": {
         "_postman_id": "dailywealth-collection",
-        "name": "Dailywealth API",
+        "name": "Dailywealth Pro API",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
-            "name": "Auth",
+            "name": "Admin",
             "item": [
                 {
-                    "name": "Register",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"phone\": \"1234567890\",\n    \"password\": \"password123\",\n    \"referred_by\": \"\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
+                    "name": "Authentication",
+                    "item": [
+                        {
+                            "name": "Admin Register",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"username\": \"admin_sajid\",\n    \"email\": \"admin@dailywealth.com\",\n    \"password\": \"securepassword123\",\n    \"admin_secret\": \"DAILYWEALTH_ADMIN_2026\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/auth/admin/register",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "admin",
+                                        "register"
+                                    ]
                                 }
-                            }
+                            },
+                            "response": []
                         },
-                        "url": {
-                            "raw": "{{base_url}}/auth/register",
-                            "host": [
-                                "{{base_url}}"
+                        {
+                            "name": "Admin Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"email\": \"admin@dailywealth.com\",\n    \"password\": \"securepassword123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/auth/admin/login",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "admin",
+                                        "login"
+                                    ]
+                                }
+                            },
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "var jsonData = pm.response.json();",
+                                            "if (jsonData.access_token) {",
+                                            "    pm.collectionVariables.set(\"jwt_token\", jsonData.access_token);",
+                                            "    pm.environment.set(\"jwt_token\", jsonData.access_token);",
+                                            "}"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
                             ],
-                            "path": [
-                                "auth",
-                                "register"
-                            ]
+                            "response": []
+                        },
+                        {
+                            "name": "Admin Logout",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/auth/admin/logout",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "admin",
+                                        "logout"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Admin Change Password",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"old_password\": \"securepassword123\",\n    \"new_password\": \"newsecurepassword456\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/auth/admin/change-password",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "admin",
+                                        "change-password"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Admin Forgot Password",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"email\": \"admin@dailywealth.com\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/auth/admin/forgot-password",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "admin",
+                                        "forgot-password"
+                                    ]
+                                }
+                            },
+                            "response": []
                         }
-                    },
-                    "response": []
+                    ]
                 },
                 {
-                    "name": "Login",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/auth/login",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "auth",
-                                "login"
-                            ]
-                        }
-                    },
-                    "event": [
+                    "name": "Dashboard",
+                    "item": [
                         {
-                            "listen": "test",
-                            "script": {
-                                "exec": [
-                                    "var jsonData = pm.response.json();",
-                                    "if (jsonData.access_token) {",
-                                    "    pm.collectionVariables.set(\"jwt_token\", jsonData.access_token);",
-                                    "    pm.environment.set(\"jwt_token\", jsonData.access_token);",
-                                    "}"
+                            "name": "Admin Dashboard",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
                                 ],
-                                "type": "text/javascript"
-                            }
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/dashboard",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "dashboard"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Admin Growth Stats",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/stats/growth?days=30&interval=daily",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "stats",
+                                        "growth"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "days",
+                                            "value": "30"
+                                        },
+                                        {
+                                            "key": "interval",
+                                            "value": "daily",
+                                            "description": "Options: daily, weekly, monthly"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": []
                         }
-                    ],
-                    "response": []
+                    ]
+                },
+                {
+                    "name": "User Management",
+                    "item": [
+                        {
+                            "name": "List Users",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/users",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "users"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Ban User",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"user_id\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/user/ban",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "user",
+                                        "ban"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Freeze User",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"user_id\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/user/freeze",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "user",
+                                        "freeze"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Transactions",
+                    "item": [
+                        {
+                            "name": "Approve Deposit",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"deposit_id\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/deposit/approve",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "deposit",
+                                        "approve"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Reject Deposit",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"deposit_id\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/deposit/reject",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "deposit",
+                                        "reject"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Approve Withdrawal",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"withdrawal_id\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/withdraw/approve",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "withdraw",
+                                        "approve"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Reject Withdrawal",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"withdrawal_id\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/withdraw/reject",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "withdraw",
+                                        "reject"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Referrals",
+                    "item": [
+                        {
+                            "name": "Full Referrals",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/referrals",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "referrals"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Plan Management",
+                    "item": [
+                        {
+                            "name": "List All Plans (Admin)",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/plans?include_inactive=true",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "plans"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "include_inactive",
+                                            "value": "true",
+                                            "description": "Set to true to include deactivated plans"
+                                        }
+                                    ]
+                                },
+                                "description": "Get all plans including inactive ones (admin only)"
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get Plan by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/plans/1",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "plans",
+                                        "1"
+                                    ]
+                                },
+                                "description": "Get a specific plan by its ID"
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create New Plan",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"VIP\",\n    \"slug\": \"vip\",\n    \"price_usd\": 20,\n    \"price_pkr\": 5600,\n    \"ads_limit\": 1,\n    \"earning_per_ad\": 0.10\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/plans",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "plans"
+                                    ]
+                                },
+                                "description": "Create a new plan. Required: name, slug, price_usd, price_pkr. Optional: ads_limit (default 1), earning_per_ad (default 0.10)"
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Plan",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Basic Plus\",\n    \"price_usd\": 5,\n    \"price_pkr\": 1400,\n    \"ads_limit\": 1,\n    \"earning_per_ad\": 0.10\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/plans/1",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "plans",
+                                        "1"
+                                    ]
+                                },
+                                "description": "Update an existing plan. All fields are optional."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete Plan (Soft)",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/plans/1",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "plans",
+                                        "1"
+                                    ]
+                                },
+                                "description": "Soft delete (deactivate) a plan"
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete Plan (Hard)",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/admin/plans/1?hard=true",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "plans",
+                                        "1"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "hard",
+                                            "value": "true",
+                                            "description": "Permanently delete the plan"
+                                        }
+                                    ]
+                                },
+                                "description": "Permanently delete a plan from database"
+                            },
+                            "response": []
+                        }
+                    ]
                 }
             ]
         },
@@ -83,452 +700,509 @@
             "name": "User",
             "item": [
                 {
+                    "name": "Authentication",
+                    "item": [
+                        {
+                            "name": "Register",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"phone\": \"1234567890\",\n    \"password\": \"password123\",\n    \"referred_by\": \"\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/auth/register",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "register"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/auth/login",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "login"
+                                    ]
+                                }
+                            },
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "var jsonData = pm.response.json();",
+                                            "if (jsonData.access_token) {",
+                                            "    pm.collectionVariables.set(\"jwt_token\", jsonData.access_token);",
+                                            "    pm.environment.set(\"jwt_token\", jsonData.access_token);",
+                                            "}"
+                                        ],
+                                        "type": "text/javascript"
+                                    }
+                                }
+                            ],
+                            "response": []
+                        },
+                        {
+                            "name": "Logout",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/auth/logout",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "logout"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Change Password",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"old_password\": \"password123\",\n    \"new_password\": \"newpassword456\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/auth/change-password",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "change-password"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Forgot Password",
+                            "request": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"email\": \"test@example.com\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/auth/forgot-password",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "forgot-password"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
                     "name": "Dashboard",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/user/dashboard",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "user",
-                                "dashboard"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Deposit",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"amount\": 100,\n    \"screenshot_url\": \"https://example.com/screenshot.png\"\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
+                    "item": [
+                        {
+                            "name": "User Dashboard",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/user/dashboard",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "user",
+                                        "dashboard"
+                                    ]
                                 }
-                            }
+                            },
+                            "response": []
                         },
-                        "url": {
-                            "raw": "{{base_url}}/user/deposit",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "user",
-                                "deposit"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Withdraw",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"amount_usd\": 50\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
+                        {
+                            "name": "Personal Earnings Stats",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/user/stats/earnings?days=30&interval=daily",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "user",
+                                        "stats",
+                                        "earnings"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "days",
+                                            "value": "30"
+                                        },
+                                        {
+                                            "key": "interval",
+                                            "value": "daily",
+                                            "description": "Options: daily, weekly, monthly"
+                                        }
+                                    ]
                                 }
-                            }
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/user/withdraw",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "user",
-                                "withdraw"
-                            ]
+                            },
+                            "response": []
                         }
-                    },
-                    "response": []
+                    ]
                 },
                 {
-                    "name": "Wallet",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/user/wallet",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "user",
-                                "wallet"
-                            ]
+                    "name": "Finance",
+                    "item": [
+                        {
+                            "name": "Payment Methods",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/user/payment-methods",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "user",
+                                        "payment-methods"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Deposit",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"amount\": 100,\n    \"screenshot_url\": \"https://example.com/screenshot.png\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/user/deposit",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "user",
+                                        "deposit"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Withdraw",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"amount_usd\": 1\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/user/withdraw",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "user",
+                                        "withdraw"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Wallet Info",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/user/wallet",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "user",
+                                        "wallet"
+                                    ]
+                                }
+                            },
+                            "response": []
                         }
-                    },
-                    "response": []
+                    ]
+                },
+                {
+                    "name": "Ads",
+                    "item": [
+                        {
+                            "name": "Watch Ad",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/ads/watch-ad",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "ads",
+                                        "watch-ad"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Ad Status",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/ads/ad-status",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "ads",
+                                        "ad-status"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Reset Ad (Test Only)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/ads/reset-ad",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "ads",
+                                        "reset-ad"
+                                    ]
+                                }
+                            },
+                            "response": []
+                        }
+                    ]
                 },
                 {
                     "name": "Team",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/user/team",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "user",
-                                "team"
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Ads",
-            "item": [
-                {
-                    "name": "Watch Ad",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/ads/watch-ad",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "ads",
-                                "watch-ad"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Ad Status",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/ads/ad-status",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "ads",
-                                "ad-status"
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Admin",
-            "item": [
-                {
-                    "name": "List Users",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/admin/users",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "admin",
-                                "users"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Approve Deposit",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"deposit_id\": 1\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
+                    "item": [
+                        {
+                            "name": "Team Overview",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/user/team",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "user",
+                                        "team"
+                                    ]
                                 }
-                            }
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/admin/deposit/approve",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "admin",
-                                "deposit",
-                                "approve"
-                            ]
+                            },
+                            "response": []
                         }
-                    },
-                    "response": []
+                    ]
                 },
                 {
-                    "name": "Reject Deposit",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"deposit_id\": 1\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
+                    "name": "Plans",
+                    "item": [
+                        {
+                            "name": "List Plans",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/plan/",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "plan",
+                                        ""
+                                    ]
                                 }
-                            }
+                            },
+                            "response": []
                         },
-                        "url": {
-                            "raw": "{{base_url}}/admin/deposit/reject",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "admin",
-                                "deposit",
-                                "reject"
-                            ]
+                        {
+                            "name": "Buy Plan",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{jwt_token}}",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"plan_id\": \"basic\",\n    \"screenshot_url\": \"https://example.com/payment-screenshot.png\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "http://127.0.0.1:5000/plan/buy",
+                                    "host": [
+                                        "http://127.0.0.1:5000"
+                                    ],
+                                    "path": [
+                                        "plan",
+                                        "buy"
+                                    ]
+                                },
+                                "description": "Buy a plan (basic, standard, premium). Requires screenshot_url of payment proof."
+                            },
+                            "response": []
                         }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Approve Withdrawal",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"withdrawal_id\": 1\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/admin/withdraw/approve",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "admin",
-                                "withdraw",
-                                "approve"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Reject Withdrawal",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"withdrawal_id\": 1\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/admin/withdraw/reject",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "admin",
-                                "withdraw",
-                                "reject"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Ban User",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"user_id\": 1\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/admin/user/ban",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "admin",
-                                "user",
-                                "ban"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Freeze User",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"user_id\": 1\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "{{base_url}}/admin/user/freeze",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "admin",
-                                "user",
-                                "freeze"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Full Referrals",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{jwt_token}}",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/admin/referrals",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "admin",
-                                "referrals"
-                            ]
-                        }
-                    },
-                    "response": []
+                    ]
                 }
             ]
         }
@@ -554,11 +1228,6 @@
         }
     ],
     "variable": [
-        {
-            "key": "base_url",
-            "value": "http://localhost:5000",
-            "type": "string"
-        },
         {
             "key": "jwt_token",
             "value": "YOUR_JWT_TOKEN_HERE",

@@ -16,12 +16,19 @@ def approve_deposit(deposit_id):
             raise ValueError(f"Deposit {deposit_id} not found")
 
         if deposit.status != 'pending':
-            raise ValueError(f"Deposit {deposit_id} is not pending")
+            raise ValueError(f"Deposit {deposit_id} has already been {deposit.status}")
 
         deposit.status = 'approved'
 
-        # Credit deposit amount to user's wallet
-        update_wallet_balance(deposit.user_id, deposit.amount, 'credit')
+        if deposit.deposit_type == 'plan_purchase':
+            from .plan import activate_user_plan
+            activate_user_plan(deposit.user_id, deposit.plan_name)
+        else:
+            # Credit regular deposit amount to user's wallet AND withdrawable balance
+            update_wallet_balance(deposit.user_id, deposit.amount, 'credit')
+            from .wallet import update_withdrawable_balance
+            update_withdrawable_balance(deposit.user_id, deposit.amount, 'credit')
+            logging.info(f"Regular deposit approved - credited to withdrawable balance for user {deposit.user_id}")
 
         # Get upline
         upline = get_upline(deposit.user_id)

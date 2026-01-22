@@ -6,5 +6,5 @@ class AdsWatch(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True, nullable=False)
     date = db.Column(db.Date, primary_key=True, nullable=False)
-    watched = db.Column(db.Boolean, default=False)
+    ads_watched = db.Column(db.Integer, default=0)
     earned_amount = db.Column(db.Float, default=0.0)
